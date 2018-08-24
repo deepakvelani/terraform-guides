@@ -4,14 +4,12 @@ variable "tfe_consumer_workspace" { }
 variable "tfe_consumer_token"     { }
 variable "ttl"                    { default = "1" }
 
-/*
 # Getting the below error in TFE when running remote plans, commenting this out for now
 # "Setup failed: Failed to copy slug dir: lstat /Users: no such file or directory"
 terraform {
   backend "remote" {
   }
 }
-*/
 
 # This errors right now due to a bug in the TFE provider: https://github.com/terraform-providers/terraform-provider-tfe/issues/8
 data "terraform_remote_state" "producer" {

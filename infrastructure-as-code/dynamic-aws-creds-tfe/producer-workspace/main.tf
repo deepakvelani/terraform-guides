@@ -6,11 +6,6 @@ variable "consumer_name"  { default = "dynamic-aws-creds-consumer" }
 variable "aws_access_key" { }
 variable "aws_secret_key" { }
 
-/*
-## Uncomment after first apply and follow the instructions in the output
-terraform { backend "remote" {} }
-*/
-
 provider "tfe" {
   token    = "${var.tfe_token}"
 }
@@ -130,13 +125,15 @@ output "zREADME" {
 After your first apply, re-initialize Terraform with your newly created workspace
 backend so you can begin using it for remote state. A file named `tfe.tf` has
 been placed locally which contains the "remote" backend Terraform provider block.
+This new provider block will allow you to run the below init command to initialize
+the enhanced remote backend for TFE.
 
 Remove the `tfe.tf` file if you want to switch back to local state.
 
 Note that normally you would _not_ pass the `token` in via the CLI, but
-for the sake of ease in this example, we are doing that below.
+for the sake of simplicity in this example, we are doing that below.
 
-See below for best practices for configuring the backend.
+See below best practices for configuring the backend.
 
 https://www.terraform.io/docs/backends/config.html
 https://www.terraform.io/docs/backends/types/remote.html#configuration-variables
