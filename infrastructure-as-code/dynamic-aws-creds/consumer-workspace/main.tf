@@ -1,12 +1,8 @@
-variable "name" { default = "dynamic-aws-creds-consumer" }
-variable "path" { default = "../producer-workspace/terraform.tfstate" }
-variable "ttl"  { default = "1" }
-
-terraform {
-  backend "local" {
-    path = "terraform.tfstate"
-  }
-}
+variable "path"    { default = "../producer-workspace/terraform.tfstate" }
+variable "backend" { default = "" }
+variable "role"    { default = "" }
+variable "name"    { default = "dynamic-aws-creds-consumer" }
+variable "ttl"     { default = "1" }
 
 data "terraform_remote_state" "producer" {
   backend = "local"
@@ -17,8 +13,8 @@ data "terraform_remote_state" "producer" {
 }
 
 data "vault_aws_access_credentials" "creds" {
-  backend = "${data.terraform_remote_state.producer.backend}"
-  role    = "${data.terraform_remote_state.producer.role}"
+  backend = "${var.backend != "" ? var.backend : data.terraform_remote_state.producer.backend}"
+  role    = "${var.role != "" ? var.role : data.terraform_remote_state.producer.role}"
 }
 
 provider "aws" {

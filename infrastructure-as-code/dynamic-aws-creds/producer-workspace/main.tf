@@ -2,12 +2,6 @@ variable "aws_access_key" { }
 variable "aws_secret_key" { }
 variable "name"           { default = "dynamic-aws-creds-producer" }
 
-terraform {
-  backend "local" {
-    path = "terraform.tfstate"
-  }
-}
-
 provider "vault" {}
 
 resource "vault_aws_secret_backend" "aws" {
