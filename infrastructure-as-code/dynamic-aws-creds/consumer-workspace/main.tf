@@ -1,9 +1,3 @@
-variable "path"    { default = "../producer-workspace/terraform.tfstate" }
-variable "backend" { default = "" }
-variable "role"    { default = "" }
-variable "name"    { default = "dynamic-aws-creds-consumer" }
-variable "ttl"     { default = "1" }
-
 data "terraform_remote_state" "producer" {
   backend = "local"
 
@@ -18,6 +12,7 @@ data "vault_aws_access_credentials" "creds" {
 }
 
 provider "aws" {
+  region     = "${var.region}"
   access_key = "${data.vault_aws_access_credentials.creds.access_key}"
   secret_key = "${data.vault_aws_access_credentials.creds.secret_key}"
 }
@@ -39,13 +34,8 @@ data "aws_ami" "ubuntu" {
 }
 
 # Create AWS EC2 Instance
-resource "aws_instance" "main" {
+resource "aws_instance" "consumer" {
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.nano"
-
-  tags {
-    Name  = "${var.name}"
-    TTL   = "${var.ttl}"
-    owner = "${var.name}-guide"
-  }
+  tags          = "${merge(var.tags, map("Name", format("%s-guide", var.name)))}"
 }
