@@ -129,7 +129,7 @@ resource "azurerm_network_security_rule" "bastion_tcp_8500" {
 }
 
 module "hashistack_azure" {
-  source                     = "git@github.com:hashicorp-modules/hashistack-azure.git//quick-start"
+  source                     = "git@github.com:hashicorp-modules/hashistack-azure.git"
   name                       = "${var.name}"
   provider                   = "${var.provider}"
   environment                = "${var.environment}"
